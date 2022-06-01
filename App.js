@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 50,
-    marginHorizontal: 20
+    marginHorizontal: 20,
+    maxWidth: 500
   },
   bg: {
     flex: 1
