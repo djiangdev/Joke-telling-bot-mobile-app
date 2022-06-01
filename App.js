@@ -2,7 +2,8 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import { useState } from 'react'
 import * as Speech from 'expo-speech'
-import styles from './assets/css/styles'
+import styles from './styles'
+import jokeAPI from './api/joke'
 import {
   NativeBaseProvider,
   Select,
@@ -14,41 +15,33 @@ import {
 export default function App () {
   const [joke, setJoke] = useState(null)
   const [lang, setLang] = useState('en')
-  const heading = 'Joke Telling Robot'
-
-  async function fetchPosts () {
-    const response = await fetch(`https://v2.jokeapi.dev/joke/any?lang=${lang}`)
-    const posts = await response.json()
-    let msg = posts.joke || posts.setup
-    setJoke(msg)
-    Speech.speak(msg)
-  }
 
   const getJoke = () => {
     Speech.stop()
-    fetchPosts()
+    jokeAPI(lang).then(msg => {
+      setJoke(msg)
+      Speech.speak(msg)
+    })
   }
 
   return (
     <NativeBaseProvider style={styles.wrap}>
       <ImageBackground
-        source={require('./assets/smile.jpg')}
+        source={require('./assets/images/smile.jpg')}
         resizeMode='cover'
-        opacity={0.4}
         style={styles.bg}
+        opacity={0.4}
       >
         <View style={styles.container}>
-          <Heading style={styles.head}>{heading}</Heading>
+          <Heading style={styles.head}>Joke Telling Robot</Heading>
           <Select
-            selectedValue={lang}
-            placeholder='Select language'
             onValueChange={itemValue => setLang(itemValue)}
+            placeholder='Select language'
+            selectedValue={lang}
+            style={styles.lang}
+            _selectedItem={{ endIcon: <CheckIcon size='5' /> }}
             mb={3}
             mt={1}
-            style={styles.lang}
-            _selectedItem={{
-              endIcon: <CheckIcon size='5' />
-            }}
           >
             <Select.Item label='German' value='de' />
             <Select.Item label='English' value='en' />
