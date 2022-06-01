@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import { useState } from 'react'
+import styles from './assets/css/styles'
 import axios from 'axios'
 import * as Speech from 'expo-speech'
 import {
+  NativeBaseProvider,
   Select,
   CheckIcon,
-  NativeBaseProvider,
   Heading,
   Button
 } from 'native-base'
@@ -27,7 +28,7 @@ export default function App () {
   }
 
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider style={styles.wrap}>
       <ImageBackground
         source={require('./assets/smile.jpg')}
         resizeMode='cover'
@@ -61,31 +62,3 @@ export default function App () {
     </NativeBaseProvider>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 50,
-    marginHorizontal: 20,
-    maxWidth: 500
-  },
-  bg: {
-    flex: 1
-  },
-  head: {
-    textAlign: 'center'
-  },
-  lang: {
-    backgroundColor: '#fff'
-  },
-  button: {
-    position: 'absolute',
-    bottom: 40,
-    width: '100%'
-  },
-  text: {
-    fontSize: 25,
-    marginTop: 20,
-    lineHeight: 40
-  }
-})
