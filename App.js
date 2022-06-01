@@ -12,7 +12,7 @@ import {
   Button
 } from 'native-base'
 
-export default function App () {
+export default App () {
   const [joke, setJoke] = useState(null)
   const [lang, setLang] = useState('en')
   const heading = 'Joke Telling Robot'
