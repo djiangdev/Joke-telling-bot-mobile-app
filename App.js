@@ -1,9 +1,8 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import { useState } from 'react'
-import styles from './assets/css/styles'
-import axios from 'axios'
 import * as Speech from 'expo-speech'
+import styles from './assets/css/styles'
 import {
   NativeBaseProvider,
   Select,
@@ -17,14 +16,17 @@ export default function App () {
   const [lang, setLang] = useState('en')
   const heading = 'Joke Telling Robot'
 
+  async function fetchPosts () {
+    const response = await fetch(`https://v2.jokeapi.dev/joke/any?lang=${lang}`)
+    const posts = await response.json()
+    let msg = posts.joke || posts.setup
+    setJoke(msg)
+    Speech.speak(msg)
+  }
+
   const getJoke = () => {
     Speech.stop()
-    axios.get(`https://v2.jokeapi.dev/joke/any?lang=${lang}`).then(response => {
-      if (response.data.error) return setJoke(response.data.message)
-      let msg = response.data.joke || response.data.setup
-      setJoke(msg)
-      Speech.speak(msg)
-    })
+    fetchPosts()
   }
 
   return (
